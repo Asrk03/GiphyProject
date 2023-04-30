@@ -18,7 +18,6 @@ const Search = () => {
                 offset: 50 * page
             },
         });
-        console.log(page)
         setTotalPages(Math.ceil(searchResults.data.pagination.total_count / 50));
         setGifs(searchResults.data.data);
     };
