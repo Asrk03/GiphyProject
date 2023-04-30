@@ -20,7 +20,7 @@ const Home = () => {
          
     }, [])
     const handleLogOut = () => {
-        signOut(auth).then(() => navigate("/"));
+        signOut(auth).then(() => navigate("/login"));
     };
 
     return (
