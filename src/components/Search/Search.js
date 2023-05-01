@@ -6,8 +6,8 @@ import TrendingGiphy from "../Giphy/TrendingGiphy";
 
 const Search = () => {
     const [search, setSearch] = useState("");
-    const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [gifs, setGifs] = useState([]);
 
     const getSearch = async (page) => {
@@ -33,7 +33,7 @@ const Search = () => {
             />
             <button onClick={()=>{
                 getSearch(0);
-                setCurrentPage(0);
+                setCurrentPage(1);
             }} className="group relative py-2 px-4 border  text-sm font-medium rounded-md text-white bg-black focus:outline-none focus:ring-2 focus:ring-offset-2">Search</button>
             </div>
             {/* Pagination */}
@@ -42,12 +42,13 @@ const Search = () => {
                     onClick={()=>{
                         setCurrentPage((currentPage)=>{
                             let newPage;
-                            if(currentPage==0) newPage=0;
+                            if(currentPage==1) newPage=0;
                             else newPage=currentPage-1;
                             getSearch(newPage);
                             return newPage;
                         })
-                    }}></button>
+                    }}
+                    disabled={currentPage==1?true:false}></button>
                     <p className="m-4">
                         {currentPage +" of "+ totalPages}
                     </p>
@@ -55,12 +56,18 @@ const Search = () => {
                     onClick={()=>{
                         setCurrentPage((currentPage)=>{
                             let newPage;
-                            if(currentPage==totalPages) newPage=totalPages;
-                            else newPage=currentPage+1;
-                            getSearch(newPage);
+                            if(currentPage>=totalPages){
+                                newPage=totalPages;
+                                getSearch(newPage-1);
+                            }
+                            else{
+                                newPage=currentPage+1;
+                                getSearch(newPage);
+                            }
                             return newPage;
                         })
-                    }}></button>
+                    }}
+                    disabled={currentPage==totalPages?true:false}></button>
             </div>)}
             {/* Display Gifs */}
         {!search?<TrendingGiphy/>:(

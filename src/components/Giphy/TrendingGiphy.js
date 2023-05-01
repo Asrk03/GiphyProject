@@ -5,8 +5,8 @@ import Shimmer from "../Shimmer/Shimmer";
 const TrendingGiphy = () => {
     const [gifs, setGifs] = useState([]);
     const [err, setErr] = useState("");
-    const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -17,7 +17,7 @@ const TrendingGiphy = () => {
                     offset: currentPage * 50
                 }
             });
-            setTotalPages(Math.ceil(response.data.pagination.total_count / 50));
+            setTotalPages(Math.ceil(response.data.pagination.total_count / 50)-1);
             setGifs(response.data.data);
         };
         fetchData();
@@ -27,11 +27,28 @@ const TrendingGiphy = () => {
         <div className="">
         {/* Pagination */}
         <div className="flex justify-center display-none">
-            <button className="px-3 border-t-[25px] border-t-transparent border-r-[50px] border-r-black border-b-[25px] border-b-transparent m-2" onClick={(e)=>setCurrentPage(currentPage-1)}></button>
+            <button className="px-3 border-t-[25px] border-t-transparent border-r-[50px] border-r-black border-b-[25px] border-b-transparent m-2"
+             onClick={()=>{
+                setCurrentPage((currentPage)=>{
+                    let newPage;
+                    if(currentPage==1) newPage=1;
+                    else newPage=currentPage-1;
+                    
+                    return newPage;
+                })
+            }}></button>
             <p className="m-4">
                 {currentPage +" of "+ totalPages}
             </p>
-            <button className="px-3 border-t-[25px] border-t-transparent border-l-[50px] border-l-black border-b-[25px] border-b-transparent m-2" onClick={(e)=>setCurrentPage(currentPage+1)}></button>
+            <button className="px-3 border-t-[25px] border-t-transparent border-l-[50px] border-l-black border-b-[25px] border-b-transparent m-2"
+            onClick={()=>{
+                setCurrentPage((currentPage)=>{
+                    let newPage;
+                    if(currentPage>=totalPages) newPage=totalPages;
+                    else newPage=currentPage+1;
+                    return newPage;
+                })
+            }}></button>
         </div>
 
         {
