@@ -23,3 +23,5 @@ npm run build
 ```
 npm start
 ```
+
+The site will be working on localhost:1234/GiphyProject
